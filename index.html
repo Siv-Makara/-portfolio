@@ -113,7 +113,7 @@
       opacity: .35; filter: blur(28px); z-index: -1;
     }
     .photo {
-      width: 320px; aspect-ratio: 4/5; object-fit: cover; object-position: center 20%;
+      width: 320px; height: auto; aspect-ratio: 4/5; object-fit: cover; object-position: center 20%;
       border-radius: 24px; border: 1px solid var(--border); box-shadow: var(--shadow);
     }
 
@@ -340,12 +340,10 @@
 
     /* Responsive */
     @media (max-width: 900px) {
-      .hero-grid, .about-grid, .project { grid-template-columns: 1fr; }
-      .photo-wrap { order: -1; }
+      .about-grid, .project { grid-template-columns: 1fr; }
+      .hero-grid { gap: 32px; }
       .photo { width: 240px; }
-      .hero { padding: 56px 0 48px; text-align: center; }
-      .hero p.lead { margin-inline: auto; }
-      .btns { justify-content: center; }
+      .hero { padding: 56px 0 48px; }
       .skills-grid { grid-template-columns: 1fr 1fr; }
       .project-visual { border-right: 0; border-bottom: 1px solid var(--border); }
       .project-info .btns { justify-content: flex-start; }
@@ -364,8 +362,20 @@
       section { padding: 60px 0; }
       .card { padding: 22px; }
       .project-info, .project-visual { padding: 22px; }
-      .photo { width: 200px; }
-      .hero { padding-top: 40px; }
+      /* Hero on phones: title left + small photo right, rest full width below */
+      .hero { padding: 32px 0 40px; }
+      .hero-grid { grid-template-columns: 1fr auto; gap: 0 16px; align-items: center; }
+      .hero-grid > div:first-child { display: contents; }
+      .hero .badge { grid-column: 1 / -1; justify-self: start; margin-bottom: 16px; font-size: .78rem; }
+      #heroTitle { grid-column: 1; grid-row: 2; font-size: clamp(1.45rem, 6.6vw, 2.1rem); line-height: 1.15; }
+      .photo-wrap { grid-column: 2; grid-row: 2; }
+      .photo { width: clamp(108px, 32vw, 150px); border-radius: 16px; }
+      .ring { inset: -6px; border-radius: 20px; }
+      .hero .typer, .hero p.lead, .hero .btns { grid-column: 1 / -1; }
+      .hero .typer { font-size: .9rem; }
+      .hero p.lead { font-size: 1rem; margin: 16px 0 24px; }
+      .hero .btns { gap: 10px; flex-wrap: nowrap; }
+      .hero .btns .btn { padding: 11px 16px; font-size: .9rem; white-space: nowrap; }
       /* slide up instead of sideways on phones, so nothing pokes past the edge */
       .reveal.left:not(.show), .reveal.right:not(.show) { transform: translateY(24px); }
     }
