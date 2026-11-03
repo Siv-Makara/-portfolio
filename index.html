@@ -364,7 +364,12 @@
       section { padding: 60px 0; }
       .card { padding: 22px; }
       .project-info, .project-visual { padding: 22px; }
+      .photo { width: 200px; }
+      .hero { padding-top: 40px; }
+      /* slide up instead of sideways on phones, so nothing pokes past the edge */
+      .reveal.left:not(.show), .reveal.right:not(.show) { transform: translateY(24px); }
     }
+    html, body { overflow-x: clip; }
   </style>
 </head>
 <body>
@@ -435,7 +440,7 @@
             <div class="card stat reveal"><b data-count="2" data-suffix="+">0</b><span>Years in tech roles</span></div>
             <div class="card stat reveal"><b data-count="3">0</b><span>Business systems: HR, ERP, Payroll</span></div>
             <div class="card stat reveal"><b data-count="1">0</b><span>Open-source desktop app</span></div>
-            <div class="card stat reveal"><b>🇰🇭</b><span>Based in Phnom Penh</span></div>
+            <div class="card stat reveal"><b><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-4px"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></b><span>Based in Phnom Penh, Cambodia</span></div>
           </div>
         </div>
       </div>
@@ -542,7 +547,7 @@
           </div>
           <div class="project-info">
             <h3>MakiPost</h3>
-            <div class="sub">Desktop API client · Made in Cambodia 🇰🇭</div>
+            <div class="sub">Desktop API client · Made in Cambodia</div>
             <p>A fast desktop API client in the spirit of Postman and Bruno. Collections are saved as plain JSON files you can commit to Git, environments make switching servers easy, and you can theme the whole app.</p>
             <ul class="features">
               <li>Imports Postman collections (v2.0 / v2.1)</li>
@@ -623,7 +628,9 @@
     // Hero title: split into animated words
     const title = document.getElementById('heroTitle');
     let wi = 0;
-    title.querySelectorAll(':scope, :scope > span').forEach(node => {
+    // Only split the plain first line; the gradient line animates as one block,
+    // because per-word inline-blocks break background-clip: text (words vanish).
+    [title].forEach(node => {
       [...node.childNodes].forEach(n => {
         if (n.nodeType !== 3 || !n.textContent.trim()) return;
         const frag = document.createDocumentFragment();
@@ -637,6 +644,14 @@
         n.replaceWith(frag);
       });
     });
+    const grad = title.querySelector('.grad');
+    grad.classList.add('w');
+    grad.style.animationDelay = (wi * 70 + 100) + 'ms, 0ms';
+    grad.style.animationName = 'wordIn, shimmer';
+    grad.style.animationDuration = '.8s, 8s';
+    grad.style.animationTimingFunction = 'cubic-bezier(.2,.7,.2,1), linear';
+    grad.style.animationIterationCount = '1, infinite';
+    grad.style.animationFillMode = 'forwards, none';
 
     // Typing effect
     const roles = ['Laravel Developer', 'Vue.js Developer', 'REST API Builder', 'HR · ERP · Payroll Systems', 'Creator of MakiPost'];
